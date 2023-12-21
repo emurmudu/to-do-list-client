@@ -1,33 +1,83 @@
+import { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { AuthContext } from "../Provider/AuthProvider";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Navbar = () => {
+    const { user, logOut } = useContext(AuthContext);
+    const [profileDropdown, setProfileDropdown] = useState(false);
 
-    const navLink = <>
-        <li><NavLink to='/'>Home</NavLink></li>
-        <li><NavLink to='/login'>Login</NavLink></li>
+    const handleProfileDropdown = () => {
+        setProfileDropdown(!profileDropdown);
+    };
 
-    </>
+    const handleLogOut = () => {
+        logOut()
+            .then(() => toast('You are logged out'))
+            .catch(error => {
+                console.error(error);
+                toast.error('Error during logout');
+            });
+    }
+
+    const navLinks = (
+        <>
+            <li><NavLink to='/'>Home</NavLink></li>
+            <li><NavLink to='/ourUsers'>Our Users</NavLink></li>
+            <li><NavLink to='/blog'>Blog</NavLink></li>
+            <li><NavLink to='/contact'>Contact Us</NavLink></li>
+        </>
+    );
+
+
+
     return (
-        <div className="navbar bg-base-300">
+        <div className="navbar shadow-md bg-base-100">
             <div className="navbar-start">
                 <div className="dropdown">
-                    <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+                    <label tabIndex={0} className="btn btn-ghost lg:hidden">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
-                    </div>
+                    </label>
                     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                        {navLink}
+                        {navLinks}
                     </ul>
                 </div>
-                <a className="btn btn-ghost text-xl">daisyUI</a>
+                <NavLink to="/" className="cursor-pointer normal-case font-bold text-2xl md:text-3xl">
+                    <span className="text-yellow-700">TaskManager</span>
+
+                </NavLink>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
-                    {navLink}
+                    {navLinks}
                 </ul>
             </div>
+
             <div className="navbar-end">
-                <a className="btn">Button</a>
+                {user ? (
+                    <>
+                        <span className="hidden lg:block font-bold p-2">{user.displayName}</span>
+                        <div className="flex items-center gap-1">
+                            <img
+                                onClick={handleProfileDropdown}
+                                className="md:block btn btn-ghost btn-circle avatar"
+                                src={user.photoURL || 'https://i.ibb.co/FH5XVy5/images.jpg'}
+                                alt="Profile"
+                            />
+
+                            <button onClick={handleLogOut} className="btn btn-sm font-bold dark:text-white dark:bg-zinc-700">
+                                Logout
+                            </button>
+                        </div>
+                    </>
+                ) : (
+                    <NavLink to="/login" className="font-bold">
+                        <span>Login</span>
+                    </NavLink>
+                )}
             </div>
+            <ToastContainer />
         </div>
     );
 };

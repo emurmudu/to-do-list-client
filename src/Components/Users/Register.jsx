@@ -22,9 +22,10 @@ const Register = () => {
         e.preventDefault();
         const name = e.target.name.value;
         const email = e.target.email.value;
+        const occupation = e.target.occupation.value;
         const photoURL = e.target.photoURL.value;
         const password = e.target.password.value;
-        console.log(name, email, photoURL, password);
+        console.log(name, email, occupation, photoURL, password);
 
         if (password.length < 6) {
             setRegisterError('Password length should be 6 or above');
@@ -57,7 +58,7 @@ const Register = () => {
 
             // Additional fetch request here
 
-            const userData = { name, email, password, photoURL };
+            const userData = { name, email, occupation, password, photoURL };
             fetch('http://localhost:5000/user', {
                 method: 'POST',
                 headers: {
@@ -102,6 +103,12 @@ const Register = () => {
                             <span className="label-text dark:text-white">Email</span>
                         </label>
                         <input type="email" name="email" placeholder="your email" className="input input-bordered dark:bg-zinc-700" required />
+                    </div>
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text dark:text-white">Occupation</span>
+                        </label>
+                        <input type="text" name="occupation" placeholder="your occupation" className="input input-bordered dark:bg-zinc-700" required />
                     </div>
                     <div className="form-control">
                         <label className="label">

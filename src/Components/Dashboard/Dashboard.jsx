@@ -109,7 +109,7 @@ const Dashboard = () => {
             </div>
             {/* // Dashboard content  */}
             <div className=" h-[100vh] bg-red-100 bg-opacity-70 flex-1 p-6 ">
-                <h1 className=" bg-red-200 py-4 mb-6 bg-opacity-70">Activity of {user.displayName || 'user'}</h1>
+                <h1 className=" bg-red-200 py-4 mb-6 bg-opacity-70 text-3xl font-bold">Activity of {user.displayName || 'user'}</h1>
                 <Outlet></Outlet>
             </div>
         </div>
